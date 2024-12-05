@@ -42,12 +42,22 @@ public class ParkingLotCommandHandler {
         try {
             Car car = new Car(registrationNumber, color);
             Ticket ticket = parkingLot.reserveSlot(car);
-            System.out.println(
-                String.format(
-                    PARKING_SLOT_ALLOCATED_MSG,
-                    ticket.getSlotNumber()
-                )
-            );
+            if (ticket == null) {
+                System.out.println(
+                        String.format(
+                                DUPLICATE_VEHICLE_MESSAGE,
+                                ticket.getSlotNumber()
+                        )
+                );
+            }
+            else {
+                System.out.println(
+                        String.format(
+                                PARKING_SLOT_ALLOCATED_MSG,
+                                ticket.getSlotNumber()
+                        )
+                );
+            }
         } catch (IllegalArgumentException ex) {
             System.out.println("Bad input: " + ex.getMessage());
         } catch (ParkingLotFullException ex) {
