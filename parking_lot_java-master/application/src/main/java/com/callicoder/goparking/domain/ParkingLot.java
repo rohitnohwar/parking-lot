@@ -12,6 +12,7 @@ public class ParkingLot {
     private SortedSet<ParkingSlot> availableSlots = new TreeSet<>();
     private Set<ParkingSlot> occupiedSlots = new HashSet<>();
     private Map<Integer, ParkingSlot> parkingSlotMap = new HashMap<>();
+    private Set<String> carsParked = new HashSet<>();
 
     public ParkingLot(int numSlots) {
         if (numSlots <= 0) {
@@ -40,6 +41,9 @@ public class ParkingLot {
             throw new ParkingLotFullException();
         }
 
+        if (carsParked.contains(car.getRegistrationNumber())) return null;
+        carsParked.add(car.getRegistrationNumber());
+
         ParkingSlot nearestSlot = this.availableSlots.first();
 
         nearestSlot.reserve(car);
@@ -64,6 +68,7 @@ public class ParkingLot {
         if (parkingSlot.getCar() != null) {
             this.occupiedSlots.remove(parkingSlot);
             this.availableSlots.add(parkingSlot);
+            carsParked.remove(parkingSlot.getCar().getRegistrationNumber());
         }
         parkingSlot.clear();
         return parkingSlot;
